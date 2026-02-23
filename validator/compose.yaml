@@ -48,10 +48,39 @@ services:
       - CANTON_PARTICIPANT_POSTGRES_PASSWORD=${SPLICE_DB_PASSWORD}
       - CANTON_PARTICIPANT_POSTGRES_DB=participant-${MIGRATION_ID}
       - CANTON_PARTICIPANT_POSTGRES_PORT=${SPLICE_DB_PORT}
+      - CANTON_PARTICIPANT_JSON_API_SERVER_PATH_PREFIX=/api/json-api
     depends_on:
       postgres-splice:
         condition: service_healthy
     restart: always
+    networks:
+      - ${DOCKER_NETWORK:-splice_validator}
+
+  utility-ui:
+    image: "${UTILITIES_IMAGE_REPO}/frontend:${UTILITIES_IMAGE_VERSION}"
+    environment:
+      - AUTH_AUTHORITY=${AUTH_AUTHORITY}
+      - AUTH_CLIENT_ID=${AUTH_CLIENT_ID}
+      - AUTH_AUDIENCE=${AUTH_AUDIENCE}
+      - UTILITY_APP_UTILITY_BACKEND_URL=${UTILITY_APP_UTILITY_BACKEND_URL}
+    depends_on:
+      - participant
+      - validator
+    networks:
+      - ${DOCKER_NETWORK:-splice_validator}
+
+  darsyncer:
+    image: "${UTILITIES_IMAGE_REPO}/utilities-darsyncer-client:${UTILITIES_IMAGE_VERSION}"
+    command:
+      - --endpoint=participant:5002
+    environment:
+      - DARS=/dars
+      - CLIENT_ID=${VALIDATOR_AUTH_CLIENT_ID}
+      - CLIENT_SECRET=${VALIDATOR_AUTH_CLIENT_SECRET}
+      - OAUTH_DOMAIN=${AUTH_AUTHORITY}
+    depends_on:
+      - participant
+      - validator
     networks:
       - ${DOCKER_NETWORK:-splice_validator}
 
@@ -165,6 +194,7 @@ services:
       - ans-web-ui
       - wallet-web-ui
       - validator
+      - utility-ui
     restart: always
     networks:
       - ${DOCKER_NETWORK:-splice_validator}
