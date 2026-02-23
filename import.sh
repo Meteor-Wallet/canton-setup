@@ -26,6 +26,7 @@ if [ -d "$ORIGINAL_FOLDER" ]; then
   fi
 
   mv "$ORIGINAL_FOLDER" "$DESTINATION_FOLDER"
+  mv "./splice-node/VERSION" "./VERSION"
 fi
 
 # Cleanup
