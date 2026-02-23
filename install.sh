@@ -12,6 +12,7 @@ fi
 
 # remove the old installation if it exists
 rm -r "$INSTALL_PATH" || true
+mkdir -p "$INSTALL_PATH"
 
 FILE="${VERSION}_splice-node.tar.gz"
 
