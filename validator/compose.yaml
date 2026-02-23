@@ -156,7 +156,7 @@ services:
       - SPLICE_APP_UI_AUTH_AUDIENCE=${VALIDATOR_AUTH_AUDIENCE}
       - SPLICE_APP_UI_AUTH_CLIENT_ID=${WALLET_UI_CLIENT_ID}
       - SPLICE_APP_UI_AUTH_URL=${AUTH_URL}
-      - SPLICE_APP_UI_HTTP_URL=true
+      - SPLICE_APP_UI_HTTP_URL=false
       - SPLICE_APP_UI_NETWORK_NAME=${SPLICE_APP_UI_NETWORK_NAME}
       - SPLICE_APP_UI_NETWORK_FAVICON_URL=${SPLICE_APP_UI_NETWORK_FAVICON_URL}
       - SPLICE_APP_UI_AMULET_NAME=${SPLICE_APP_UI_AMULET_NAME}
@@ -173,7 +173,7 @@ services:
       - SPLICE_APP_UI_AUTH_CLIENT_ID=${ANS_UI_CLIENT_ID}
       - SPLICE_APP_UI_AUTH_URL=${AUTH_URL}
       - SPLICE_APP_WALLET_REDIRECT=http://wallet.localhost
-      - SPLICE_APP_UI_HTTP_URL=true
+      - SPLICE_APP_UI_HTTP_URL=false
       - SPLICE_APP_UI_NETWORK_NAME=${SPLICE_APP_UI_NETWORK_NAME}
       - SPLICE_APP_UI_NETWORK_FAVICON_URL=${SPLICE_APP_UI_NETWORK_FAVICON_URL}
       - SPLICE_APP_UI_AMULET_NAME=${SPLICE_APP_UI_AMULET_NAME}
@@ -189,7 +189,7 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./nginx:/etc/nginx/includes
     ports:
-      - "${HOST_BIND_IP:-127.0.0.1}:80:80"
+      - "${HOST_BIND_IP:-127.0.0.1}:${HOST_BIND_PORT:-80}:80"
     depends_on:
       - ans-web-ui
       - wallet-web-ui
